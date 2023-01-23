@@ -12,6 +12,7 @@ function timer() {
    
     changeSlide();
     document.getElementById('img__slider').style = `
+    -webkit-animation: slide 4s infinite;
     animation: slide 4s infinite;
     `;
     //авто-slider через 2 секунды
@@ -22,6 +23,7 @@ function timer() {
 function stop() {
     clearTimeout(timerId);
     document.getElementById('img__slider').style = `
+        -webkit-animation: stopSlide 4s infinite;
         animation: stopSlide 4s linear;
         `;
 }
@@ -30,6 +32,7 @@ function stop() {
 function start() {
     timerId = setTimeout(timer, 4000);
     document.getElementById('img__slider').style = `
+    -webkit-animation: startSlide 4s infinite;
     animation: startSlide 4s infinite;
     `;
 }
