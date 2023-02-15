@@ -1,71 +1,80 @@
+const carouselSlide = document.querySelector('.slider__inner');
+const carouselImages = document.querySelectorAll('.slider__inner img');
+const prevBtn = document.querySelector('#before');
+const nextBtn = document.querySelector('#next');
 
-let slide = ['nature_1.jpg', 'nature_2.jpg', 'nature_3.jpg', 'nature_4.jpg', 'nature_5.jpg', 'nature_6.jpg'];
-        
-let n = 0, max = slide.length-1;
+
+let counter = 1;
 let timerId;
+let size = carouselImages[0].clientWidth;
+carouselSlide.style.transform = `translateX(${-size * counter}px)`;
 
+
+//Button Listener
+nextBtn.addEventListener('click', () => {
+    if (counter >= carouselImages.length - 1) return;
+    carouselSlide.style.transition = "transform 0.4s ease-in-out";
+    counter++;
+    carouselSlide.style.transform = `translateX(${-size * counter}px)`;
+});
+
+prevBtn.addEventListener('click', () => {
+    if (counter <= 0) return;
+    carouselSlide.style.transition = "transform 0.4s ease-in-out";
+    counter--;
+    carouselSlide.style.transform = `translateX(${-size * counter}px)`;
+});
+
+carouselSlide.addEventListener('transitionend', () => {
+    if (carouselImages[counter].id === 'lastClone') {
+        carouselSlide.style.transition = 'none'
+        counter = carouselImages.length - 2;
+        carouselSlide.style.transform = `translateX(${-size * counter}px)`;
+    }
+
+    if (carouselImages[counter].id === 'firstClone') {
+        carouselSlide.style.transition = 'none'
+        counter = carouselImages.length - counter;
+        carouselSlide.style.transform = `translateX(${-size * counter}px)`;
+    }
+});
+
+
+//auto-slider
 function timer() {
-    //условие для перехода слайдов в начало
-    if (++n > max){
-        n = 0;
-    }
-   
-    changeSlide();
-    document.getElementById('img__slider').style = `
-    -webkit-animation: slide 4s infinite;
-    animation: slide 4s infinite;
-    `;
-    //авто-slider через 2 секунды
+    size = carouselImages[0].clientWidth;
     timerId = setTimeout(timer, 4000);
+    if (counter >= carouselImages.length - 1) return;
+    carouselSlide.style.transition = "transform 0.4s ease-in-out";
+    counter++;
+    carouselSlide.style.transform = `translateX(${-size * counter}px)`;
 }
 
-//остановка авто-slider при наведении мыши на картинку
-function stop() {
+
+carouselSlide.addEventListener('mouseover', () => {
     clearTimeout(timerId);
-    document.getElementById('img__slider').style = `
-        -webkit-animation: stopSlide 4s infinite;
-        animation: stopSlide 4s linear;
-        `;
-}
+});
 
-// старт авто-slider при отведении мыши от картинки
-function start() {
+prevBtn .addEventListener('mouseover', () => {
+    clearTimeout(timerId);
+});
+
+nextBtn .addEventListener('mouseover', () => {
+    clearTimeout(timerId);
+});
+
+carouselSlide.addEventListener('mouseout', () => {
     timerId = setTimeout(timer, 4000);
-    document.getElementById('img__slider').style = `
-    -webkit-animation: startSlide 4s infinite;
-    animation: startSlide 4s infinite;
-    `;
-}
+});
 
-//переход на следующий слайд
-function next() {
-    if (n >= max){
-        n = 0;
-    } else {
-        n++;
-    }
-    
-    
-    changeSlide();
-}
+prevBtn .addEventListener('mouseover', () => {
+    timerId = setTimeout(timer, 4000);
+});
 
-//переход на предыдущий слайд
-function before() {
-    if (n > 0){
-        n--;
-    } else {
-        n = max;
-    }
-    
-    changeSlide();
+nextBtn .addEventListener('mouseover', () => {
+    timerId = setTimeout(timer, 4000);
+});
 
-}
-
-function changeSlide() {
-    //вывод картинки
-    document.getElementById('img__slider').src = `images/slider/${slide[n]}`;
-    
-}
 
 
 // бургер меню
@@ -80,8 +89,6 @@ function navToggle() {
         }
     }
 }
-
-
 
 window.addEventListener('scroll', function() {
     let scrollPos = window.scrollY; //определение скролла по координате Y
@@ -109,4 +116,3 @@ window.addEventListener('scroll', function() {
 
 
   
-
