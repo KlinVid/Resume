@@ -13,7 +13,7 @@
 
 body {
     font-family: 'Oswald', sans-serif;
-    font-size: 18px;
+    font-size: 20px;
     color: #595959;
     line-height: 1.2;
     background-color: var(--main-bg-color);
@@ -86,7 +86,7 @@ body {
 }
 
 .header__title {
-    font-size: 20px;
+    font-size: 23px;
 }
 
 .nav__inner {
